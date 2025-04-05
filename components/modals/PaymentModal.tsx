@@ -30,20 +30,30 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-
+  
     const newErrors: Record<string, string> = {} // Store errors here
     const { name, cardNumber } = formData
+  
 
-    // Form validation
-    if (!name.trim()) newErrors.name = "Name is required"
-    if (!cardNumber.trim()) newErrors.cardNumber = "Card number is required"
-
+    if (!name.trim()) {
+      newErrors.name = "Name is required"
+    } else if (!/^[A-Za-z\s]+$/.test(name)) {
+      newErrors.name = "Name can only contain letters and spaces"
+    }
+  
+    // Card number validation
+    if (!cardNumber.trim()) {
+      newErrors.cardNumber = "Card number is required"
+    } else if (!/^\d{13,19}$/.test(cardNumber.replace(/\s+/g, ''))) { // Check if card number is between 13-19 digits
+      newErrors.cardNumber = "Card number must be between 13 and 19 digits"
+    } 
+  
     // If there are errors, set the state and prevent form submission
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return
     }
-
+  
     // Simulate successful submission
     toast.success("Payment info submitted successfully!")
     onPaymentSuccess(selectedPlan)
