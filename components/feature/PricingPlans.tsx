@@ -2,13 +2,23 @@
 
 import React, { useState } from "react";
 import { PaymentModal } from "@/components/modals/PaymentModal";
+import { OrderSummaryModal } from "@/components/modals/OrderSummaryModal";
+
+export interface Plan {
+  title: string;
+  price: string;
+  cycle: string;
+  features: string[];
+  button: string;
+}
 
 export default function PricingPlans() {
   const [billingCycle, setBillingCycle] = useState("monthly");
   const [selectedPlanIndex, setSelectedPlanIndex] = useState(1);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [orderSummary, setOrderSummary] = useState<Plan | null>(null);
 
-  const plans = [
+  const plans: Plan[] = [
     {
       title: "Standard",
       price: "$99",
@@ -32,6 +42,11 @@ export default function PricingPlans() {
     },
   ];
 
+  const handlePaymentSuccess = (plan: Plan) => {
+    setOrderSummary(plan);
+    setShowPaymentForm(false);
+  };
+
   return (
     <section
       id="features"
@@ -43,7 +58,7 @@ export default function PricingPlans() {
         <h2 className="text-4xl md:text-5xl font-bold">
           Flexible <span className="text-orange-500">Plans</span>
         </h2>
-        <p className="mt-2 mb-8 text-lg">Choose a plan that work best for you & your team</p>
+        <p className="mt-2 mb-8 text-lg">Choose a plan that works best for you & your team</p>
 
         <div className="inline-flex mb-12 rounded-full bg-white/10 p-1">
           <button
@@ -106,7 +121,20 @@ export default function PricingPlans() {
           ))}
         </div>
 
-        <PaymentModal isOpen={showPaymentForm} onClose={() => setShowPaymentForm(false)} />
+        <PaymentModal
+          isOpen={showPaymentForm}
+          onClose={() => setShowPaymentForm(false)}
+          onPaymentSuccess={handlePaymentSuccess}
+          selectedPlan={plans[selectedPlanIndex]}
+        />
+
+        {orderSummary && (
+          <OrderSummaryModal
+            plan={orderSummary}
+            isOpen={!!orderSummary}
+            onClose={() => setOrderSummary(null)}
+          />
+        )}
 
         <div className="mt-12 flex justify-between text-xs text-white/60">
           <div>Term & Conditions</div>
