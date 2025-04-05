@@ -12,7 +12,9 @@ export default function Header({ onShowSignUp }: { onShowSignUp: () => void }) {
   return (
     <>
       <header className="w-full fixed top-0 left-0 z-30 bg-transparent px-6 py-4 flex justify-between items-center text-white">
-        <h2 className="text-xl font-bold">VirtualOffice</h2>
+        {/* <h2 className="text-xl font-bold">VirtualOffice</h2> */}
+        <img src="/images/Teamify - 1 - Logo Name White Orange I 1.png" alt="Virtual Office Logo" className="h-8" />
+        
          <nav className="space-x-8 flex-1 flex justify-center">
             <Link
               href="/"
