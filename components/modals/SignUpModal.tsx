@@ -61,10 +61,10 @@ export const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onBac
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="bg-white text-black rounded-lg p-6 w-full max-w-sm shadow-lg relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md">
+      <div className="bg-white/20 backdrop-blur-md text-white rounded-2xl shadow-2xl w-full max-w-sm p-8 relative">
         <button
-          className="absolute top-2 right-3 text-gray-500 hover:text-black text-lg"
+          className="absolute top-2 right-3 text-gray-500 hover:text-white text-lg"
           onClick={onClose}
         >
           &times;
@@ -129,16 +129,18 @@ export const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onBac
             <select
               value={companySize}
               onChange={(e) => setCompanySize(e.target.value)}
-              className={`w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 ${
+              className={`w-full border  px-3 py-2 rounded-lg focus:outline-none focus:ring-2 ${
                 errors.companySize ? "border-red-500 ring-red-400" : "focus:ring-orange-500"
               }`}
             >
+              <div className="text-black">
               <option value="">Select Company Size</option>
               <option value="0-10">0-10 employees</option>
               <option value="11-50">11-50 employees</option>
               <option value="51-200">51-200 employees</option>
               <option value="201-500">201-500 employees</option>
               <option value="500+">500+ employees</option>
+              </div>
             </select>
             {errors.companySize && <p className="text-red-500 text-sm mt-1">{errors.companySize}</p>}
           </div>
@@ -209,4 +211,3 @@ export const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onBac
     </div>
   )
 }
-

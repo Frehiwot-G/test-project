@@ -52,7 +52,7 @@ export default function PricingPlans() {
     <section
       id="features"
       className="relative min-h-screen bg-cover bg-center text-white px-6 py-20"
-      style={{ backgroundImage: `url('/images/bg6.jpeg')` }}
+      style={{ backgroundImage: `url('/images/image 1.png')` }}
     >
       <Toaster position="top-right" />
       <div className="absolute inset-0 bg-black/70 z-0" />
