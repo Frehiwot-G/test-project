@@ -3,6 +3,7 @@
 import React, { useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "react-hot-toast"
+import { ForgotPasswordModal } from "@/components/modals/ForgotPasswordModal"
 
 interface SignInModalProps {
   isOpen: boolean
@@ -14,6 +15,7 @@ export const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose, onSho
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({})
+  const [showForgotPassword, setShowForgotPassword] = useState(false)
   const router = useRouter()
 
   if (!isOpen) return null
@@ -76,19 +78,43 @@ export const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose, onSho
             Log In
           </button>
         </form>
+
+        {/* Forgot Password Link */}
+        <div className="mt-4 text-center">
+          <button
+            type="button"
+            onClick={() => setShowForgotPassword(true)}
+            className="text-sm text-orange-500 hover:text-orange-600"
+          >
+            Forgot Password?
+          </button>
+        </div>
+
         <div className="mt-4 text-center">
           <span className="text-sm text-gray-500">
-            Don’t have an account?
+            Don’t have an account?{" "}
             <button
               type="button"
-              onClick={onShowSignUp} // This will call `setModal("signup")` in the parent
+              onClick={onShowSignUp}
               className="text-orange-500 font-medium ml-1 hover:text-orange-600"
             >
               Sign Up
             </button>
           </span>
         </div>
+
+        
       </div>
+
+      {/* Include the ForgotPasswordModal component */}
+   
+       <ForgotPasswordModal
+        isOpen={showForgotPassword}
+        onClose={() => {
+          setShowForgotPassword(false) 
+          onClose() // Close SignInModal as well
+        }}
+      />
     </div>
   )
 }

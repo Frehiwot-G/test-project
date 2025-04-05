@@ -36,7 +36,7 @@ export default function Home() {
       <div className="absolute inset-0 bg-black/60 z-10" />
 
       {/* Hero Content */}
-      <div className="relative z-20 flex flex-col items-center justify-center h-full text-center text-white px-4 mt-20">
+      <div className="relative z-20 flex flex-col items-center justify-center h-full text-center text-white px-4 mt-40">
         <h1 className="text-4xl md:text-5xl font-bold mb-6">
           Welcome To Your <span className="text-orange-500">Virtual Office</span>
         </h1>
