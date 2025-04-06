@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { PaymentModal } from "@/components/modals/PaymentModal";
 import { OrderSummaryModal } from "@/components/modals/OrderSummaryModal";
+import { Toaster } from "react-hot-toast"
 
 export interface Plan {
   title: string;
@@ -53,6 +54,7 @@ export default function PricingPlans() {
       className="relative min-h-screen bg-cover bg-center text-white px-6 py-20"
       style={{ backgroundImage: `url('/images/bg6.jpeg')` }}
     >
+      <Toaster position="top-right" />
       <div className="absolute inset-0 bg-black/70 z-0" />
       <div className="relative z-10 max-w-6xl mx-auto text-center">
         <h2 className="text-4xl md:text-5xl font-bold">
