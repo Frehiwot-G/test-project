@@ -2,7 +2,7 @@
 
 import React, { useState } from "react"
 import { toast } from "react-hot-toast"
-import { useRouter } from "next/navigation" // Import useRouter for navigation
+import { useRouter } from "next/navigation" 
 
 interface ForgotPasswordModalProps {
   isOpen: boolean
@@ -37,10 +37,10 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="bg-white text-black rounded-lg p-6 w-full max-w-sm shadow-lg relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md">
+      <div className="bg-white/20 backdrop-blur-md text-white rounded-2xl shadow-2xl w-full max-w-sm p-8 relative">
         <button
-          className="absolute top-2 right-3 text-gray-500 hover:text-black text-lg"
+          className="absolute top-2 right-3 text-gray-500 hover:text-white text-lg"
           onClick={onClose}
         >
           &times;
@@ -70,3 +70,4 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen
     </div>
   )
 }
+

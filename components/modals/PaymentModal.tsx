@@ -1,14 +1,14 @@
-"use client";
+"use client"
 
-import React, { useState } from "react";
-import { toast } from "react-hot-toast";
-import { Plan } from "@/components/feature/PricingPlans";
+import React, { useState } from "react"
+import { toast } from "react-hot-toast"
+import { Plan } from "@/components/feature/PricingPlans"
 
 interface PaymentModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onPaymentSuccess: (plan: Plan) => void;
-  selectedPlan: Plan;
+  isOpen: boolean
+  onClose: () => void
+  onPaymentSuccess: (plan: Plan) => void
+  selectedPlan: Plan
 }
 
 export const PaymentModal: React.FC<PaymentModalProps> = ({
@@ -20,41 +20,47 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   const [formData, setFormData] = useState({
     name: "",
     cardNumber: "",
-  });
+  })
 
   // Error state for form validation
   const [errors, setErrors] = useState<Record<string, string>>({
     name: "",
     cardNumber: "",
-  });
+  })
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    const newErrors: Record<string, string> = {}; // Store errors here
-    const { name, cardNumber } = formData;
+    const newErrors: Record<string, string> = {} // Store errors here
+    const { name, cardNumber } = formData
 
     // Form validation
-    if (!name.trim()) newErrors.name = "Name is required";
-    if (!cardNumber.trim()) newErrors.cardNumber = "Card number is required";
+    if (!name.trim()) newErrors.name = "Name is required"
+    if (!cardNumber.trim()) newErrors.cardNumber = "Card number is required"
 
     // If there are errors, set the state and prevent form submission
     if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
+      setErrors(newErrors)
+      return
     }
 
     // Simulate successful submission
-    toast.success("Payment info submitted successfully!");
-    onPaymentSuccess(selectedPlan);
-  };
+    toast.success("Payment info submitted successfully!")
+    onPaymentSuccess(selectedPlan)
+  }
 
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-      <div className="bg-white text-black rounded-lg p-8 w-full max-w-md">
-        <h3 className="text-xl font-bold mb-4">Payment Information</h3>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md">
+      <div className="bg-white/20 backdrop-blur-md text-white rounded-2xl shadow-2xl w-full max-w-md p-8 relative">
+        <button
+          className="absolute top-2 right-3 text-gray-500 hover:text-white text-lg"
+          onClick={onClose}
+        >
+          &times;
+        </button>
+        <h3 className="text-xl font-bold mb-4 text-center">Payment Information</h3>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <input
@@ -62,33 +68,37 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               placeholder="Full Name"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full border border-gray-300 px-4 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 ${
+                errors.name ? "border-red-500 ring-red-400" : "focus:ring-orange-500"
+              }`}
             />
-            {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>} {/* Show error for name */}
+            {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
           </div>
 
           <div>
             <input
               type="text"
-              placeholder="Card Number"
+              placeholder="Account Number"
               value={formData.cardNumber}
               onChange={(e) => setFormData({ ...formData, cardNumber: e.target.value })}
-              className="w-full border border-gray-300 px-4 py-2 rounded"
+              className={`w-full border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 ${
+                errors.cardNumber ? "border-red-500 ring-red-400" : "focus:ring-orange-500"
+              }`}
             />
-            {errors.cardNumber && <p className="text-red-500 text-sm">{errors.cardNumber}</p>} {/* Show error for card number */}
+            {errors.cardNumber && <p className="text-red-500 text-sm">{errors.cardNumber}</p>}
           </div>
 
           <div className="flex justify-end gap-4">
             <button
               type="button"
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-800"
+              className="text-gray-500 hover:text-white"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
+              className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition"
             >
               Submit
             </button>
@@ -96,5 +106,5 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
