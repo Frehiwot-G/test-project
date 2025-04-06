@@ -38,28 +38,51 @@ export const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onBac
     fileInputRef.current?.click()
   }
 
+ 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    const newErrors: typeof errors = {}
-
-    if (!logoPreview) newErrors.logo = "Company logo is required"
-    if (!email.trim()) newErrors.email = "Email is required"
-    if (!password.trim()) newErrors.password = "Password is required"
-    if (!confirmPassword.trim()) newErrors.confirmPassword = "Confirm Password is required"
-    if (password !== confirmPassword) newErrors.confirmPassword = "Passwords do not match"
-    if (!companyName.trim()) newErrors.companyName = "Company name is required"
-    if (!companyWebsite.trim()) newErrors.companyWebsite = "Company website is required"
-    if (!companySize) newErrors.companySize = "Company size is required"
-
-    setErrors(newErrors)
-
-    if (Object.keys(newErrors).length === 0) {
-      toast.success("Company registered successfully!")
-      onClose()
-      onBackToSignIn()
+    e.preventDefault();
+    const newErrors: typeof errors = {};
+  
+    // Logo validation
+    if (!logoPreview) newErrors.logo = "Company logo is required";
+  
+    // Email validation
+    if (!email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {  // Regex for basic email format
+      newErrors.email = "Please enter a valid email address";
     }
-  }
+  
+    // Password validation
+    if (!password.trim()) newErrors.password = "Password is required";
+  
+    // Confirm Password validation
+    if (!confirmPassword.trim()) newErrors.confirmPassword = "Confirm Password is required";
+    if (password !== confirmPassword) newErrors.confirmPassword = "Passwords do not match";
+  
+    // Company Name validation
+    if (!companyName.trim()) newErrors.companyName = "Company name is required";
+  
+    // Company Website validation (regex for http://www.example.com format)
+    if (!companyWebsite.trim()) {
+      newErrors.companyWebsite = "Company website is required";
+    } else if (!/^https?:\/\/(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,6}$/.test(companyWebsite)) {
+      newErrors.companyWebsite = "Please enter a valid website (e.g., http://www.example.com)";
+    }
+  
+    // Company Size validation
+    if (!companySize) newErrors.companySize = "Company size is required";
+  
+    setErrors(newErrors);
+  
+    if (Object.keys(newErrors).length === 0) {
+      toast.success("Company registered successfully!");
+      onClose();
+      onBackToSignIn();
+    }
+  };
 
+  
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md">
       <div className="bg-white/20 backdrop-blur-md text-white rounded-2xl shadow-2xl w-full max-w-sm p-8 relative">

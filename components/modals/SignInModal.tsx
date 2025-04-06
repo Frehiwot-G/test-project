@@ -24,7 +24,15 @@ export const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose, onSho
     e.preventDefault()
     const newErrors: typeof errors = {}
 
-    if (!email.trim()) newErrors.email = "Email is required"
+    // if (!email.trim()) newErrors.email = "Email is required"
+
+    // Email validation
+    if (!email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {  // Regex for basic email format
+      newErrors.email = "Please enter a valid email address";
+    }
+    
     if (!password.trim()) newErrors.password = "Password is required"
 
     setErrors(newErrors)
