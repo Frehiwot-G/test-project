@@ -1,10 +1,9 @@
-
 "use client"
 
 import React, { useState } from "react"
 import { SignInModal } from "@/components/modals/SignInModal"
 
-export default function Header() {
+export default function Header({ onShowSignUp }: { onShowSignUp: () => void }) {
   const [showModal, setShowModal] = useState(false)
 
   return (
@@ -25,8 +24,8 @@ export default function Header() {
         </button>
       </header>
 
-      {/* Reusable Modal */}
-      <SignInModal isOpen={showModal} onClose={() => setShowModal(false)} />
+      {/* Reusable SignInModal */}
+      <SignInModal isOpen={showModal} onClose={() => setShowModal(false)} onShowSignUp={onShowSignUp} />
     </>
   )
 }

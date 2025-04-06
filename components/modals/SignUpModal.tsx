@@ -1,14 +1,15 @@
-
 "use client"
 
 import React, { useRef, useState } from "react"
+import { toast } from "react-hot-toast"
 
 interface SignUpModalProps {
   isOpen: boolean
   onClose: () => void
+  onBackToSignIn: () => void
 }
 
-export const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => {
+export const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onBackToSignIn }) => {
   const [logoPreview, setLogoPreview] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -38,6 +39,7 @@ export const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => 
     e.preventDefault()
     const newErrors: typeof errors = {}
 
+    if (!logoPreview) newErrors.logo = "Company logo is required"
     if (!email.trim()) newErrors.email = "Email is required"
     if (!password.trim()) newErrors.password = "Password is required"
     if (!confirmPassword.trim()) newErrors.confirmPassword = "Confirm Password is required"
@@ -46,8 +48,9 @@ export const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => 
     setErrors(newErrors)
 
     if (Object.keys(newErrors).length === 0) {
-      // Submit logic here
-      console.log("Registering company", { email, password, logoPreview })
+      toast.success("Company registered successfully!")
+      onClose()
+      onBackToSignIn()
     }
   }
 
@@ -65,7 +68,9 @@ export const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => 
         <div className="flex flex-col items-center mb-4">
           <div
             onClick={triggerFileSelect}
-            className="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden cursor-pointer border-2 border-dashed border-orange-400 hover:border-orange-600 transition"
+            className={`w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden cursor-pointer border-2 border-dashed ${
+              errors.logo ? "border-red-500" : "border-orange-400"
+            } hover:border-orange-600 transition`}
           >
             {logoPreview ? (
               <img src={logoPreview} alt="Company Logo" className="w-full h-full object-cover" />
@@ -80,7 +85,7 @@ export const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => 
             className="hidden"
             onChange={handleImageUpload}
           />
-          <p className="text-sm text-gray-500 mt-2">Click to upload company logo</p>
+          {errors.logo && <p className="text-red-500 text-sm mt-2">{errors.logo}</p>}
         </div>
 
         <h2 className="text-2xl font-semibold mb-4 text-center">Company Sign Up</h2>
@@ -130,13 +135,14 @@ export const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose }) => 
             Register Company
           </button>
         </form>
-
+          {/* Link to Sign In Modal */}
         <div className="mt-4 text-center">
           <span className="text-sm text-gray-500">
-            Already registered?
+            Already have an account?{" "}
             <button
-              onClick={onClose}
-              className="text-orange-500 font-medium ml-1 hover:text-orange-600"
+              type="button"
+              onClick={onBackToSignIn}
+              className="text-orange-500 font-medium hover:text-orange-600"
             >
               Sign In
             </button>
