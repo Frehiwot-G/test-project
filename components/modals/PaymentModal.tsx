@@ -2,29 +2,36 @@
 
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
+import { Plan } from "@/components/feature/PricingPlans";
 
 interface PaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onPaymentSuccess: (plan: Plan) => void;
+  selectedPlan: Plan;
 }
 
-export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose }) => {
+export const PaymentModal: React.FC<PaymentModalProps> = ({
+  isOpen,
+  onClose,
+  onPaymentSuccess,
+  selectedPlan,
+}) => {
   const [formData, setFormData] = useState({
     name: "",
     cardNumber: "",
-    expiry: "",
-    cvv: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const { name, cardNumber, expiry, cvv } = formData;
-    if (!name || !cardNumber || !expiry || !cvv) {
+    const { name, cardNumber } = formData;
+    if (!name || !cardNumber) {
       toast.error("All fields are required.");
       return;
     }
+
     toast.success("Payment info submitted successfully!");
-    onClose();
+    onPaymentSuccess(selectedPlan);
   };
 
   if (!isOpen) return null;
@@ -51,22 +58,6 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose }) =
             required
           />
           <div className="flex gap-4">
-            <input
-              type="text"
-              placeholder="MM/YY"
-              value={formData.expiry}
-              onChange={(e) => setFormData({ ...formData, expiry: e.target.value })}
-              className="w-1/2 border border-gray-300 px-4 py-2 rounded"
-              required
-            />
-            <input
-              type="text"
-              placeholder="CVV"
-              value={formData.cvv}
-              onChange={(e) => setFormData({ ...formData, cvv: e.target.value })}
-              className="w-1/2 border border-gray-300 px-4 py-2 rounded"
-              required
-            />
           </div>
           <div className="flex justify-end gap-4">
             <button
