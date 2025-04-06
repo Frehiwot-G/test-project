@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import { SignUpModal } from "@/components/modals/SignUpModal" 
+import { SignUpModal } from "@/components/modals/SignUpModal"
 
 interface SignInModalProps {
   isOpen: boolean
@@ -10,11 +10,29 @@ interface SignInModalProps {
 
 export const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose }) => {
   const [showSignUpModal, setShowSignUpModal] = useState(false)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({})
 
   if (!isOpen) return null
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const newErrors: typeof errors = {}
+
+    if (!email.trim()) newErrors.email = "Email is required"
+    if (!password.trim()) newErrors.password = "Password is required"
+
+    setErrors(newErrors)
+
+    if (Object.keys(newErrors).length === 0) {
+      // Submit logic here
+      console.log("Sign in with", { email, password })
+    }
+  }
+
   const handleShowSignUp = () => {
-    setShowSignUpModal(true) // Show the SignUpModal
+    setShowSignUpModal(true)
   }
 
   return (
@@ -28,22 +46,30 @@ export const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose }) => 
             &times;
           </button>
           <h2 className="text-2xl font-semibold mb-4 text-center">Sign In</h2>
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium mb-1">Email</label>
               <input
                 type="email"
-                className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                placeholder="you@example.com"
+                className={`w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 ${
+                  errors.email ? "border-red-500 ring-red-400" : "focus:ring-orange-500"
+                }`}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
+              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Password</label>
               <input
                 type="password"
-                className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                placeholder="••••••••"
+                className={`w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 ${
+                  errors.password ? "border-red-500 ring-red-400" : "focus:ring-orange-500"
+                }`}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
+              {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
             </div>
             <button
               type="submit"
@@ -66,7 +92,9 @@ export const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose }) => 
         </div>
       </div>
 
-      {showSignUpModal && <SignUpModal isOpen={showSignUpModal} onClose={() => setShowSignUpModal(false)} />}
+      {showSignUpModal && (
+        <SignUpModal isOpen={showSignUpModal} onClose={() => setShowSignUpModal(false)} />
+      )}
     </>
   )
 }
