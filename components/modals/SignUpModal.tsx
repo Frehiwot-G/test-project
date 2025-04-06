@@ -16,6 +16,9 @@ export const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onBac
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
+  const [companyName, setCompanyName] = useState("")
+  const [companyWebsite, setCompanyWebsite] = useState("")
+  const [companySize, setCompanySize] = useState("")
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
   if (!isOpen) return null
@@ -44,6 +47,9 @@ export const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onBac
     if (!password.trim()) newErrors.password = "Password is required"
     if (!confirmPassword.trim()) newErrors.confirmPassword = "Confirm Password is required"
     if (password !== confirmPassword) newErrors.confirmPassword = "Passwords do not match"
+    if (!companyName.trim()) newErrors.companyName = "Company name is required"
+    if (!companyWebsite.trim()) newErrors.companyWebsite = "Company website is required"
+    if (!companySize) newErrors.companySize = "Company size is required"
 
     setErrors(newErrors)
 
@@ -91,6 +97,53 @@ export const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onBac
         <h2 className="text-2xl font-semibold mb-4 text-center">Company Sign Up</h2>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
+            <label className="block text-sm font-medium mb-1">Company Name</label>
+            <input
+              type="text"
+              className={`w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 ${
+                errors.companyName ? "border-red-500 ring-red-400" : "focus:ring-orange-500"
+              }`}
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+            />
+            {errors.companyName && <p className="text-red-500 text-sm mt-1">{errors.companyName}</p>}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Company Website</label>
+            <input
+              type="url"
+              className={`w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 ${
+                errors.companyWebsite ? "border-red-500 ring-red-400" : "focus:ring-orange-500"
+              }`}
+              value={companyWebsite}
+              onChange={(e) => setCompanyWebsite(e.target.value)}
+            />
+            {errors.companyWebsite && (
+              <p className="text-red-500 text-sm mt-1">{errors.companyWebsite}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Company Size</label>
+            <select
+              value={companySize}
+              onChange={(e) => setCompanySize(e.target.value)}
+              className={`w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 ${
+                errors.companySize ? "border-red-500 ring-red-400" : "focus:ring-orange-500"
+              }`}
+            >
+              <option value="">Select Company Size</option>
+              <option value="0-10">0-10 employees</option>
+              <option value="11-50">11-50 employees</option>
+              <option value="51-200">51-200 employees</option>
+              <option value="201-500">201-500 employees</option>
+              <option value="500+">500+ employees</option>
+            </select>
+            {errors.companySize && <p className="text-red-500 text-sm mt-1">{errors.companySize}</p>}
+          </div>
+
+          <div>
             <label className="block text-sm font-medium mb-1">Company Email</label>
             <input
               type="email"
@@ -102,6 +155,7 @@ export const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onBac
             />
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
           </div>
+
           <div>
             <label className="block text-sm font-medium mb-1">Password</label>
             <input
@@ -114,6 +168,7 @@ export const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onBac
             />
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
+
           <div>
             <label className="block text-sm font-medium mb-1">Confirm Password</label>
             <input
@@ -128,6 +183,7 @@ export const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onBac
               <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
             )}
           </div>
+
           <button
             type="submit"
             className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition"
@@ -135,7 +191,8 @@ export const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onBac
             Register Company
           </button>
         </form>
-          {/* Link to Sign In Modal */}
+
+        {/* Link to Sign In Modal */}
         <div className="mt-4 text-center">
           <span className="text-sm text-gray-500">
             Already have an account?{" "}
@@ -152,3 +209,4 @@ export const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onBac
     </div>
   )
 }
+
